@@ -63,11 +63,11 @@ Estas son algunas recomendaciones en Español para Nuvio, Stremio y CloudStream
 
 ### Plugins para Nuvio
 
-- **[Nuvio Providers Latinos](https://github.com/KennethJYS/Nuvio-Providers-Latino) por KennethJYS** — `https://raw.githubusercontent.com/KennethJYS/Nuvio-Providers-Latino/refs/heads/main/manifest.json` — Addon para ver series, películas y anime.
+- **[Nuvio Providers Latinos](https://raw.githubusercontent.com/KennethJYS/Nuvio-Providers-Latino/refs/heads/main/manifest.json) por KennethJYS** — Addon para ver series, películas y anime.
 
 ### Extensiones para Cloudstream
 
-- **Extensión por redblacker8** — `https://raw.githubusercontent.com/redblacker8/storm-ext/refs/heads/builds/repo.json` — Addon para ver series, películas y anime.
+- **[Extensión de Cloudstream](https://raw.githubusercontent.com/redblacker8/storm-ext/refs/heads/builds/repo.json) por redblacker8** — Addon para ver series, películas y anime.
 
 ### Addons para Stremio - Compatibles con Nuvio
 
