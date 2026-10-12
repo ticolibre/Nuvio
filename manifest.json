@@ -1,0 +1,277 @@
+{
+  "name": "Nuvio Latam+ Plugin",
+  "version": "2.0.0",
+  "scrapers": [
+    {
+      "id": "cinecalidad",
+      "name": "CineCalidad",
+      "description": "Películas en Latino desde CineCalidad. Vimeos, VOE, StreamWish.",
+      "version": "2.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie"
+      ],
+      "filename": "providers/cinecalidad.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "lamovie",
+      "name": "LaMovie",
+      "description": "Streams en Latino desde LaMovie.",
+      "version": "2.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/lamovie.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "fuegocine",
+      "name": "FuegoCine",
+      "description": "Streams en Latino desde FuegoCine. Rumble, Unlimplay, Vimeos.",
+      "version": "2.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/fuegocine.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "seriesmetro",
+      "name": "SeriesMetro",
+      "description": "Streams en Latino desde SeriesMetro. Fastream.",
+      "version": "2.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/seriesmetro.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "peliserieshoy",
+      "name": "PelisSeriesHoy",
+      "description": "Streams en Latino desde PelisSeriesHoy.",
+      "version": "2.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/peliserieshoy.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "embed69",
+      "name": "Embed69",
+      "description": "Streams en Latino/Español/Subtitulado desde Embed69. StreamWish, VOE.",
+      "version": "2.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/embed69.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "cuevana",
+      "name": "Cuevana",
+      "description": "Streams en Latino/Español/Subtitulado desde Cuevana. StreamWish, VidHide, VOE.",
+      "version": "1.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/cuevana.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "pelisplus",
+      "name": "Pelisplus",
+      "description": "Streams en Latino/Español/Subtitulado desde Pelisplus. StreamWish, VidHide, VOE.",
+      "version": "1.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/pelisplus.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "pelispedia",
+      "name": "Pelispedia",
+      "description": "Streams en Latino desde Pelispedia. Fastream.",
+      "version": "1.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/pelispedia.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "allcalidad",
+      "name": "AllCalidad",
+      "description": "Streams en Latino desde AllCalidad. Vimeos, GoodStream, StreamWish, VOE.",
+      "version": "1.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/allcalidad.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "doramasflix",
+      "name": "DoramasFlix",
+      "description": "Doramas y películas asiáticas en Latino/Subtitulado desde DoramasFlix. StreamWish, VidHide, VOE, OkRu.",
+      "version": "1.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/doramasflix.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "tioanime",
+      "name": "TioAnime",
+      "description": "Anime en Latino/Subtitulado desde TioAnime. YourUpload, OkRu.",
+      "version": "1.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/tioanime.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "animeav1",
+      "name": "AnimeAV1",
+      "description": "Anime en Latino/Subtitulado desde AnimeAV1. Zilla, YourUpload, MP4Upload, VOE, OkRu.",
+      "version": "1.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animeav1.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "jkanime",
+      "name": "JKAnime",
+      "description": "Anime en Latino/Subtitulado desde JKAnime. VidHide, MixDrop, VOE, YourUpload, MP4Upload, OkRu.",
+      "version": "1.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/jkanime.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "henaojara",
+      "name": "HenaoJara",
+      "description": "Anime en Latino/Español/Subtitulado desde HenaoJara. MixDrop, VidHide, VOE, YourUpload, MP4Upload, OkRu, StreamWish.",
+      "version": "1.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/henaojara.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "latanime",
+      "name": "LatAnime",
+      "description": "Anime en Latino/Español desde LatAnime. MixDrop, VOE, VidHide, StreamWish, YourUpload, MP4Upload, OkRu.",
+      "version": "1.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/latanime.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "seriesflix",
+      "name": "Seriesflix",
+      "description": "Streams en Latino desde Seriesflix.",
+      "version": "2.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/seriesflix.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    }
+  ]
+}
