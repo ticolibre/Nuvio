@@ -304,6 +304,22 @@
       "contentLanguage": [
         "es"
       ]
+    },
+    {
+      "id": "sololatino",
+      "name": "SoloLatino",
+      "description": "Streams en Latino/Español desde SoloLatino.",
+      "version": "1.0.0",
+      "author": "Droydr13",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/sololatino.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
     }
   ]
 }

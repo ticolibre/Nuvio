@@ -56,6 +56,7 @@ Esto es un **plugin para Nuvio**. Para instalarlo:
 | `seriesflix` | ✅ | ✅ |
 | `areshd` | ✅ | ✅ |
 | `monoschinos` | ✅ | ✅ |
+| `sololatino` | ✅ | ✅ |
 ---
 
 ## Recomendaciones de Plugins, Extensiones o Add-Ons
