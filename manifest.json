@@ -288,6 +288,22 @@
       "contentLanguage": [
         "es"
       ]
+    },
+    {
+      "id": "monoschinos",
+      "name": "MonosChinos",
+      "description": "Anime en Latino/Subtitulado desde MonosChinos.",
+      "version": "1.0.0",
+      "author": "Droydr13",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/monoschinos.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
     }
   ]
 }

@@ -55,6 +55,7 @@ Esto es un **plugin para Nuvio**. Para instalarlo:
 | `tioanime` | ✅ | ✅ |
 | `seriesflix` | ✅ | ✅ |
 | `areshd` | ✅ | ✅ |
+| `monoschinos` | ✅ | ✅ |
 ---
 
 ## Recomendaciones de Plugins, Extensiones o Add-Ons
