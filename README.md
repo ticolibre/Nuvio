@@ -54,6 +54,7 @@ Esto es un **plugin para Nuvio**. Para instalarlo:
 | `latanime` | ✅ | ✅ |
 | `tioanime` | ✅ | ✅ |
 | `seriesflix` | ✅ | ✅ |
+| `areshd` | ✅ | ✅ |
 ---
 
 ## Recomendaciones de Plugins, Extensiones o Add-Ons

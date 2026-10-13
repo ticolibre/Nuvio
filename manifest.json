@@ -272,6 +272,22 @@
       "contentLanguage": [
         "es"
       ]
+    },
+    {
+      "id": "areshd",
+      "name": "AresHD",
+      "description": "Streams en Latino/Español desde AresHD.",
+      "version": "1.0.0",
+      "author": "Droydr13",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/areshd.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
     }
   ]
 }
