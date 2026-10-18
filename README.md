@@ -42,6 +42,7 @@ Esto es un **plugin para Nuvio**. Para instalarlo:
 | `areshd` | ✅ | ✅ |
 | `cinecalidad` | ✅ | ❌ |
 | `cuevana` | ✅ | ✅ |
+| `deepflix` | ✅ | ✅ |
 | `doramasflix` | ✅ | ✅ |
 | `embed69` | ✅ | ✅ |
 | `fuegocine` | ✅ | ✅ |
