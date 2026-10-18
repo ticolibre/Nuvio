@@ -5,7 +5,7 @@
     {
       "id": "cinecalidad",
       "name": "CineCalidad",
-      "description": "Stream en Español desde cinecalidad.vg",
+      "description": "Streams en Español desde cinecalidad.vg",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -20,7 +20,7 @@
     {
       "id": "lamovie",
       "name": "LaMovie",
-      "description": "Stream en Español desde lamovie.org",
+      "description": "Streams en Español desde lamovie.org",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -36,7 +36,7 @@
     {
       "id": "fuegocine",
       "name": "FuegoCine",
-      "description": "Stream en Español desde fuegocine.com",
+      "description": "Streams en Español desde fuegocine.com",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -52,7 +52,7 @@
     {
       "id": "seriesmetro",
       "name": "SeriesMetro",
-      "description": "Stream en Español desde seriesmetro.net",
+      "description": "Streams en Español desde seriesmetro.net",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -68,7 +68,7 @@
     {
       "id": "peliserieshoy",
       "name": "PelisSeriesHoy",
-      "description": "Stream en Español desde pelisserieshoy.com",
+      "description": "Streams en Español desde pelisserieshoy.com",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -84,7 +84,7 @@
     {
       "id": "embed69",
       "name": "Embed69",
-      "description": "Stream en Español desde embed69.org",
+      "description": "Streams en Español desde embed69.org",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -100,7 +100,7 @@
     {
       "id": "cuevana",
       "name": "Cuevana",
-      "description": "Stream en Español desde cuevana3.eu",
+      "description": "Streams en Español desde cuevana3.eu",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -116,7 +116,7 @@
     {
       "id": "pelisplus",
       "name": "Pelisplus",
-      "description": "Stream en Español desde pelisplushd.bz",
+      "description": "Streams en Español desde pelisplushd.bz",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -132,7 +132,7 @@
     {
       "id": "pelispedia",
       "name": "Pelispedia",
-      "description": "Stream en Español desde pelispedia.is",
+      "description": "Streams en Español desde pelispedia.is",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -148,7 +148,7 @@
     {
       "id": "allcalidad",
       "name": "AllCalidad",
-      "description": "Stream en Español desde allcalidad.re",
+      "description": "Streams en Español desde allcalidad.re",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -164,7 +164,7 @@
     {
       "id": "doramasflix",
       "name": "DoramasFlix",
-      "description": "Stream en Español desde doramasflix.co",
+      "description": "Streams en Español desde doramasflix.co",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -180,7 +180,7 @@
     {
       "id": "tioanime",
       "name": "TioAnime",
-      "description": "Stream en Español desde tioanime.com",
+      "description": "Streams en Español desde tioanime.com",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -196,7 +196,7 @@
     {
       "id": "animeav1",
       "name": "AnimeAV1",
-      "description": "Stream en Español desde animeav1.com",
+      "description": "Streams en Español desde animeav1.com",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -212,7 +212,7 @@
     {
       "id": "jkanime",
       "name": "JKAnime",
-      "description": "Stream en Español desde jkanime.net",
+      "description": "Streams en Español desde jkanime.net",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -228,7 +228,7 @@
     {
       "id": "henaojara",
       "name": "HenaoJara",
-      "description": "Stream en Español desde henaojara.net",
+      "description": "Streams en Español desde henaojara.net",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -244,7 +244,7 @@
     {
       "id": "latanime",
       "name": "LatAnime",
-      "description": "Stream en Español desde latanime.org",
+      "description": "Streams en Español desde latanime.org",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -260,7 +260,7 @@
     {
       "id": "seriesflix",
       "name": "Seriesflix",
-      "description": "Stream en Español desde pelisflixhd1.online",
+      "description": "Streams en Español desde pelisflixhd1.online",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -276,7 +276,7 @@
     {
       "id": "areshd",
       "name": "AresHD",
-      "description": "Stream en Español desde areshd.com",
+      "description": "Streams en Español desde areshd.com",
       "version": "1.0.0",
       "author": "Droydr13",
       "supportedTypes": [
@@ -292,7 +292,7 @@
     {
       "id": "monoschinos",
       "name": "MonosChinos",
-      "description": "Stream en Español desde monoschinos2.net",
+      "description": "Streams en Español desde monoschinos2.net",
       "version": "1.0.0",
       "author": "Droydr13",
       "supportedTypes": [
@@ -308,7 +308,7 @@
     {
       "id": "sololatino",
       "name": "SoloLatino",
-      "description": "Stream en Español desde sololatino.net",
+      "description": "Streams en Español desde sololatino.net",
       "version": "1.0.0",
       "author": "Droydr13",
       "supportedTypes": [
