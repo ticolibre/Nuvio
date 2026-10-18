@@ -1,11 +1,11 @@
 {
   "name": "Nuvio Latam+",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "scrapers": [
     {
       "id": "cinecalidad",
       "name": "CineCalidad",
-      "description": "Películas en Latino desde CineCalidad. Vimeos, VOE, StreamWish.",
+      "description": "Contenido desde CineCalidad. Vimeos, VOE, StreamWish.",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -20,7 +20,7 @@
     {
       "id": "lamovie",
       "name": "LaMovie",
-      "description": "Streams en Latino desde LaMovie.",
+      "description": "Contenido desde LaMovie. Vimeos, VOE, StreamWish, GoodStream.",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -36,7 +36,7 @@
     {
       "id": "fuegocine",
       "name": "FuegoCine",
-      "description": "Streams en Latino desde FuegoCine. Rumble, Unlimplay, Vimeos.",
+      "description": "Contenido desde FuegoCine. Rumble, Unlimplay, Vimeos.",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -52,7 +52,7 @@
     {
       "id": "seriesmetro",
       "name": "SeriesMetro",
-      "description": "Streams en Latino desde SeriesMetro. Fastream.",
+      "description": "Contenido desde SeriesMetro. Fastream.",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -68,7 +68,7 @@
     {
       "id": "peliserieshoy",
       "name": "PelisSeriesHoy",
-      "description": "Streams en Latino desde PelisSeriesHoy.",
+      "description": "Contenido desde PelisSeriesHoy. Servidores propios.",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -84,7 +84,7 @@
     {
       "id": "embed69",
       "name": "Embed69",
-      "description": "Streams en Latino/Español/Subtitulado desde Embed69. StreamWish, VOE.",
+      "description": "Contenido desde Embed69. StreamWish, VOE.",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -100,7 +100,7 @@
     {
       "id": "cuevana",
       "name": "Cuevana",
-      "description": "Streams en Latino/Español/Subtitulado desde Cuevana. StreamWish, VidHide, VOE.",
+      "description": "Contenido desde Cuevana. StreamWish, VidHide, VOE.",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -116,7 +116,7 @@
     {
       "id": "pelisplus",
       "name": "Pelisplus",
-      "description": "Streams en Latino/Español/Subtitulado desde Pelisplus. StreamWish, VidHide, VOE.",
+      "description": "Contenido desde Pelisplus. StreamWish, VidHide, VOE.",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -132,7 +132,7 @@
     {
       "id": "pelispedia",
       "name": "Pelispedia",
-      "description": "Streams en Latino desde Pelispedia. Fastream.",
+      "description": "Contenido desde Pelispedia. Fastream.",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -148,7 +148,7 @@
     {
       "id": "allcalidad",
       "name": "AllCalidad",
-      "description": "Streams en Latino desde AllCalidad. Vimeos, GoodStream, StreamWish, VOE.",
+      "description": "Contenido desde AllCalidad. Vimeos, GoodStream, StreamWish, VOE.",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -164,7 +164,7 @@
     {
       "id": "doramasflix",
       "name": "DoramasFlix",
-      "description": "Doramas y películas asiáticas en Latino/Subtitulado desde DoramasFlix. StreamWish, VidHide, VOE, OkRu.",
+      "description": "Contenido desde DoramasFlix. StreamWish, VidHide, VOE, OkRu.",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -180,7 +180,7 @@
     {
       "id": "tioanime",
       "name": "TioAnime",
-      "description": "Anime en Latino/Subtitulado desde TioAnime. YourUpload, OkRu.",
+      "description": "Contenido desde TioAnime. YourUpload, OkRu.",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -196,7 +196,7 @@
     {
       "id": "animeav1",
       "name": "AnimeAV1",
-      "description": "Anime en Latino/Subtitulado desde AnimeAV1. Zilla, YourUpload, MP4Upload, VOE, OkRu.",
+      "description": "Contenido desde AnimeAV1. Zilla, YourUpload, MP4Upload, VOE, OkRu.",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -212,7 +212,7 @@
     {
       "id": "jkanime",
       "name": "JKAnime",
-      "description": "Anime en Latino/Subtitulado desde JKAnime. VidHide, MixDrop, VOE, YourUpload, MP4Upload, OkRu.",
+      "description": "Contenido desde JKAnime. VidHide, MixDrop, VOE, YourUpload, MP4Upload, OkRu.",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -228,7 +228,7 @@
     {
       "id": "henaojara",
       "name": "HenaoJara",
-      "description": "Anime en Latino/Español/Subtitulado desde HenaoJara. MixDrop, VidHide, VOE, YourUpload, MP4Upload, OkRu, StreamWish.",
+      "description": "Contenido desde HenaoJara. MixDrop, VidHide, VOE, YourUpload, MP4Upload, OkRu, StreamWish.",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -244,7 +244,7 @@
     {
       "id": "latanime",
       "name": "LatAnime",
-      "description": "Anime en Latino/Español desde LatAnime. MixDrop, VOE, VidHide, StreamWish, YourUpload, MP4Upload, OkRu.",
+      "description": "Contenido desde LatAnime. MixDrop, VOE, VidHide, StreamWish, YourUpload, MP4Upload, OkRu.",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -260,7 +260,7 @@
     {
       "id": "seriesflix",
       "name": "Seriesflix",
-      "description": "Streams en Latino desde Seriesflix.",
+      "description": "Contenido desde Seriesflix. Nupload.",
       "version": "2.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
@@ -276,7 +276,7 @@
     {
       "id": "areshd",
       "name": "AresHD",
-      "description": "Streams en Latino/Español desde AresHD.",
+      "description": "Contenido desde AresHD. VOE, Filemoon, StreamWish, VidHide, Doodstream, Streamtape, Uqload, OkRu.",
       "version": "1.0.0",
       "author": "Droydr13",
       "supportedTypes": [
@@ -292,7 +292,7 @@
     {
       "id": "monoschinos",
       "name": "MonosChinos",
-      "description": "Anime en Latino/Subtitulado desde MonosChinos.",
+      "description": "Contenido desde MonosChinos. VOE, Filemoon, StreamWish, VidHide, Doodstream, Streamtape, Uqload, OkRu.",
       "version": "1.0.0",
       "author": "Droydr13",
       "supportedTypes": [
@@ -308,7 +308,7 @@
     {
       "id": "sololatino",
       "name": "SoloLatino",
-      "description": "Streams en Latino/Español desde SoloLatino.",
+      "description": "Contenido desde SoloLatino. VOE, Filemoon, StreamWish, VidHide, Doodstream, Streamtape, Uqload, OkRu.",
       "version": "1.0.0",
       "author": "Droydr13",
       "supportedTypes": [
