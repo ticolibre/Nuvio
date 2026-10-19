@@ -100,7 +100,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
     const startTime = Date.now();
     console.log(`[PelisSeriesHoy] Buscando: TMDB ${tmdbId} (${mediaType})`);
     try {
-      let resolveServer2 = function(lbl, hash, langLabel) {
+      let resolveServer2 = function(lbl, hash) {
         return __async(this, null, function* () {
           try {
             const d = yield post({ a: "2", v: hash }).then((r) => r.json());
@@ -109,17 +109,15 @@ function getStreams(tmdbId, mediaType, season, episode) {
             let targetUrl = d.u;
             if (targetUrl.startsWith("/"))
               targetUrl = `${BASE_URL}${targetUrl}`;
-            const serverNameClean = lbl.replace(/[^a-zA-Z0-9+ ]/g, "").trim() || d.src || "Server";
+            const serverNameClean = lbl.replace(/[^A-Za-z\u00C0-\u00FF0-9+ ]/g, "").trim() || d.src || "Server";
             if (targetUrl.includes("p.php?v=")) {
               console.log(`[PelisSeriesHoy] Descartando ${serverNameClean} (p.php?v=)`);
               return null;
             }
-            const quality = d.quality || d.q;
+            const quality = d.quality || d.q || "HD";
             if (d.sig) {
               const proxyUrl = `${BASE_URL}/p.php?url=${encodeURIComponent(targetUrl)}&sig=${encodeURIComponent(d.sig)}`;
               return {
-                name: withSourceName("PelisSeriesHoy", serverNameClean),
-                title: `${quality} \xB7 ${langLabel} \xB7 ${serverNameClean}`,
                 url: proxyUrl,
                 quality,
                 headers: { "Referer": BASE_URL }
@@ -127,8 +125,6 @@ function getStreams(tmdbId, mediaType, season, episode) {
             }
             if (d.type === "mp4" || targetUrl.includes(".mp4") || targetUrl.includes(".m3u8")) {
               return {
-                name: withSourceName("PelisSeriesHoy", serverNameClean),
-                title: `${quality} \xB7 ${langLabel} \xB7 ${serverNameClean}`,
                 url: targetUrl,
                 quality,
                 headers: { "Referer": BASE_URL }
@@ -193,10 +189,16 @@ function getStreams(tmdbId, mediaType, season, episode) {
         const langLabel = lang === "LAT" ? "Latino" : lang === "ESP" ? "Espa\xF1ol" : "Subtitulado";
         console.log(`[PelisSeriesHoy] Resolviendo ${servers.length} servidores en ${langLabel}...`);
         const results = yield Promise.all(
-          servers.map((serverInfo) => resolveServer2(serverInfo[0], serverInfo[1], langLabel))
+          servers.map((serverInfo) => resolveServer2(serverInfo[0], serverInfo[1]))
         );
         const validStreams = results.filter((r) => r !== null);
         if (validStreams.length > 0) {
+          // Se numeran seguido (Opci\u00F3n1, Opci\u00F3n2, ...) para que no queden
+          // huecos cuando el sitio devuelve una opci\u00F3n que se descarta.
+          validStreams.forEach((stream, i) => {
+            stream.name = withSourceName("PelisSeriesHoy", `Opci\xF3n${i + 1}`);
+            stream.title = [stream.quality, langLabel].filter(Boolean).join(" \xB7 ");
+          });
           streams.push(...validStreams);
           break;
         }
