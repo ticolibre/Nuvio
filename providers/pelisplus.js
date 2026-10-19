@@ -40,6 +40,11 @@ function __export(target, all) {
     __defProp(target, name, { get: all[name], enumerable: true });
 }
 module.exports = __toCommonJS(pelisplus_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 
 // Pelisplus provider for Nuvio. Inspired by the CloudStream PelisplusHDProvider
 // (search -> pelicula/serie pages -> video[] embeds: embed69 / xupalace).
@@ -959,7 +964,7 @@ function processEmbed(embed) {
         return null;
       var langLabel = LANG_LABELS[embed.lang] || "Latino";
       return {
-        name: "Pelisplus",
+        name: withSourceName("Pelisplus", r.label),
         title: `${result.quality || "HD"} · ${langLabel} · ${r.label}`,
         url: result.url,
         quality: result.quality || "HD",

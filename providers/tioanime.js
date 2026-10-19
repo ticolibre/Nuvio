@@ -40,6 +40,11 @@ function __export(target, all) {
     __defProp(target, name, { get: all[name], enumerable: true });
 }
 module.exports = __toCommonJS(tioanime_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 
 // TioAnime provider for Nuvio. Inspired by the CloudStream TioAnimeProvider
 // (search API -> anime page episodes -> ver page videos[] embeds).
@@ -584,7 +589,7 @@ function processVideoEntry(entry, animeTitle, pageUrl) {
         return null;
       var langLabel = LANG_LABELS[lang] || lang;
       return {
-        name: "TioAnime",
+        name: withSourceName("TioAnime", serverLabel),
         title: `${result.quality || "HD"} · ${langLabel} · ${serverLabel}`,
         url: result.url,
         quality: result.quality || "HD",

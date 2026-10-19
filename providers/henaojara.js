@@ -40,6 +40,11 @@ function __export(target, all) {
     __defProp(target, name, { get: all[name], enumerable: true });
 }
 module.exports = __toCommonJS(henaojara_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 
 // HenaoJara provider for Nuvio. Inspired by Pigamer37's animeflv-stremio-addon
 // routes/henaojara.js (search -> anime eps -> /hj server links -> resolvers).
@@ -541,7 +546,7 @@ function processEmbed(url, lang, pageUrl) {
         return null;
       var langLabel = lang === "LAT" ? "Latino" : lang === "ESP" ? "Español" : "Subtitulado";
       return {
-        name: "HenaoJara",
+        name: withSourceName("HenaoJara", label),
         title: `${result.quality || "HD"} · ${langLabel} · ${label}`,
         url: result.url,
         quality: result.quality || "HD",

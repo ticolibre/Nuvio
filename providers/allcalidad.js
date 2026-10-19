@@ -40,6 +40,11 @@ function __export(target, all) {
     __defProp(target, name, { get: all[name], enumerable: true });
 }
 module.exports = __toCommonJS(allcalidad_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 
 // AllCalidad provider for Nuvio. Inspired by the CloudStream AllCalidadProvider.
 // Pure JSON REST API (no HTML scraping):
@@ -573,7 +578,7 @@ function processEmbed(embed) {
       if ((quality === "HD" || quality === "Unknown") && result.quality && result.quality !== "HD" && result.quality !== "Unknown")
         quality = result.quality;
       return {
-        name: "AllCalidad",
+        name: withSourceName("AllCalidad", r.label),
         title: `${quality} · ${langLabel} · ${r.label}`,
         url: result.url,
         quality: quality,

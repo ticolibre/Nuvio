@@ -40,6 +40,11 @@ function __export(target, all) {
     __defProp(target, name, { get: all[name], enumerable: true });
 }
 module.exports = __toCommonJS(jkanime_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 
 // JKAnime provider for Nuvio. Inspired by the CloudStream JKAnimeProvider
 // (buscar -> anime page token -> ajax episodes -> servers[] base64 embeds).
@@ -457,7 +462,7 @@ function processEmbed(url, lang, pageUrl) {
         return null;
       var langLabel = lang === "LAT" ? "Latino" : lang === "ESP" ? "Español" : "Subtitulado";
       return {
-        name: "JKAnime",
+        name: withSourceName("JKAnime", label),
         title: `${result.quality || "HD"} · ${langLabel} · ${label}`,
         url: result.url,
         quality: result.quality || "HD",

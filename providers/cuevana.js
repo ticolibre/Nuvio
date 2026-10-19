@@ -40,6 +40,11 @@ function __export(target, all) {
     __defProp(target, name, { get: all[name], enumerable: true });
 }
 module.exports = __toCommonJS(cuevana_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 
 // Cuevana provider for Nuvio. Inspired by the CloudStream CuevanaProvider
 // (search -> ver-pelicula/ver-serie pages -> player.php -> var url -> resolvers).
@@ -582,7 +587,7 @@ function processOption(opt, pageUrl) {
       var langLabel = LANG_LABELS[opt.lang] || opt.lang;
       var serverLabel = getServerLabel(opt.server);
       return {
-        name: "Cuevana",
+        name: withSourceName("Cuevana", serverLabel),
         title: `${result.quality || "HD"} · ${langLabel} · ${serverLabel}`,
         url: result.url,
         quality: result.quality || "HD",

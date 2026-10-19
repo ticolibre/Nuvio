@@ -40,6 +40,11 @@ function __export(target, all) {
     __defProp(target, name, { get: all[name], enumerable: true });
 }
 module.exports = __toCommonJS(doramasflix_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 
 // DoramasFlix provider for Nuvio. Inspired by the CloudStream
 // DoramasFlixProvider (GraphQL API: searchAll -> detail/listSeasons/episodes
@@ -622,7 +627,7 @@ function processLink(link, langId) {
         return null;
       var li = langInfo(langId);
       return {
-        name: "DoramasFlix",
+        name: withSourceName("DoramasFlix", r.label),
         title: `${result.quality || "HD"} · ${li.label} · ${r.label}`,
         url: result.url,
         quality: result.quality || "HD",

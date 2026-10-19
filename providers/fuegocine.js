@@ -54,6 +54,11 @@ __export(fuegocine_exports, {
   getStreams: () => getStreams
 });
 module.exports = __toCommonJS(fuegocine_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 var UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 var TMDB_API_KEY = "439c478a771f35c05022f9feabcca01c";
 var BASE = "https://www.fuegocine.com";
@@ -630,7 +635,7 @@ function enhanceCandidate(c, pageReferer) {
       const ok = yield isVideoUrl(url, pageReferer);
       if (ok === false)
         return null;
-      return { url, headers: { "User-Agent": UA }, quality: c.quality, server: "" };
+      return { url, headers: { "User-Agent": UA }, quality: c.quality, server: hostFromUrl(url) };
     }
     return null;
   });
@@ -846,7 +851,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
         const quality = v.quality || (inferred !== "Unknown" ? inferred : "Unknown");
         const label = v.quality ? `FuegoCine ${v.quality} ${v.server || ""}`.trim() : `FuegoCine ${quality} \xB7 ${v.server || "Directo"}`.trim();
         return {
-          name: "FuegoCine",
+          name: withSourceName("FuegoCine", v.server),
           title: label,
           url: v.url,
           quality,

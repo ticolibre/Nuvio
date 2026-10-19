@@ -57,6 +57,11 @@ __export(seriesmetro_exports, {
   getStreams: () => getStreams
 });
 module.exports = __toCommonJS(seriesmetro_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 var UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36";
 function normalizeResolution(width, height) {
   if (width >= 3840 || height >= 2160)
@@ -288,7 +293,7 @@ function extractStreams(pageUrl, referer) {
         if (!stream)
           continue;
         streams.push({
-          name: "SeriesMetro",
+          name: withSourceName("SeriesMetro", "Fastream"),
           title: `${stream.quality} \xB7 ${lang} \xB7 Fastream`,
           url: stream.url,
           quality: stream.quality,

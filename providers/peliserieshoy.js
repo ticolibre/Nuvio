@@ -57,6 +57,11 @@ __export(peliserieshoy_exports, {
   getStreams: () => getStreams
 });
 module.exports = __toCommonJS(peliserieshoy_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 var UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 var BASE_URL = "https://player.pelisserieshoy.com";
 var TMDB_API_KEY = "439c478a771f35c05022f9feabcca01c";
@@ -113,7 +118,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
             if (d.sig) {
               const proxyUrl = `${BASE_URL}/p.php?url=${encodeURIComponent(targetUrl)}&sig=${encodeURIComponent(d.sig)}`;
               return {
-                name: "PelisSeriesHoy",
+                name: withSourceName("PelisSeriesHoy", serverNameClean),
                 title: `${quality} \xB7 ${langLabel} \xB7 ${serverNameClean}`,
                 url: proxyUrl,
                 quality,
@@ -122,7 +127,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
             }
             if (d.type === "mp4" || targetUrl.includes(".mp4") || targetUrl.includes(".m3u8")) {
               return {
-                name: "PelisSeriesHoy",
+                name: withSourceName("PelisSeriesHoy", serverNameClean),
                 title: `${quality} \xB7 ${langLabel} \xB7 ${serverNameClean}`,
                 url: targetUrl,
                 quality,

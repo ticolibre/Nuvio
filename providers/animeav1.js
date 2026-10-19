@@ -40,6 +40,11 @@ function __export(target, all) {
     __defProp(target, name, { get: all[name], enumerable: true });
 }
 module.exports = __toCommonJS(animeav1_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 
 // AnimeAV1 provider for Nuvio. Inspired by the CloudStream AnimeAV1Provider
 // (catalogo search -> media page episodes -> embeds:{DUB,SUB} JSON ->
@@ -333,7 +338,7 @@ function processServer(server, url, langLabel, pageUrl) {
       if (!result || !result.url)
         return null;
       return {
-        name: "AnimeAV1",
+        name: withSourceName("AnimeAV1", label),
         title: `${result.quality || "HD"} · ${langLabel} · ${label}`,
         url: result.url,
         quality: result.quality || "HD",

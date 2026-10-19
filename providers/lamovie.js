@@ -54,6 +54,11 @@ __export(lamovie_exports, {
   getStreams: () => getStreams
 });
 module.exports = __toCommonJS(lamovie_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 var UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36";
 var TIER_MAPS = {
   vimeos: { h: "720p", n: "480p" },
@@ -650,7 +655,7 @@ function processEmbed(embed) {
       const serverName = getServerName(embed.url);
       const streamQuality = result.quality || "Unknown";
       return {
-        name: "LaMovie",
+        name: withSourceName("LaMovie", serverName),
         title: `${streamQuality} \xB7 ${serverName}`,
         url: result.url,
         quality: streamQuality,

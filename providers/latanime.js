@@ -40,6 +40,11 @@ function __export(target, all) {
     __defProp(target, name, { get: all[name], enumerable: true });
 }
 module.exports = __toCommonJS(latanime_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 
 // LatAnime provider for Nuvio. Inspired by the CloudStream LatAnimeProvider
 // (buscar -> anime page episodes -> play-video data-player base64 embeds).
@@ -497,7 +502,7 @@ function processEmbed(url, lang, pageUrl) {
         return null;
       var langLabel = lang === "LAT" ? "Latino" : lang === "ESP" ? "Español" : "Subtitulado";
       return {
-        name: "LatAnime",
+        name: withSourceName("LatAnime", label),
         title: `${result.quality || "HD"} · ${langLabel} · ${label}`,
         url: result.url,
         quality: result.quality || "HD",

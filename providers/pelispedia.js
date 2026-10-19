@@ -40,6 +40,11 @@ function __export(target, all) {
     __defProp(target, name, { get: all[name], enumerable: true });
 }
 module.exports = __toCommonJS(pelispedia_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 
 // Pelispedia provider for Nuvio. Inspired by the CloudStream PelispediaProvider
 // (search -> pelicula/serie pages -> trembed iframes -> fastream embeds).
@@ -424,7 +429,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
           }
           if (!dup) {
             streams.push({
-              name: "Pelispedia",
+              name: withSourceName("Pelispedia", "Fastream"),
               title: `${r.quality || "Unknown"} · Latino · Fastream`,
               url: r.url,
               quality: r.quality || "Unknown",

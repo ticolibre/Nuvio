@@ -54,6 +54,11 @@ __export(cinecalidad_exports, {
   getStreams: () => getStreams
 });
 module.exports = __toCommonJS(cinecalidad_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 var UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36";
 var TIER_MAPS = {
   vimeos: { h: "720p", n: "480p" },
@@ -649,7 +654,7 @@ function processEmbed(embedUrl) {
         return null;
       }
       return {
-        name: "CineCalidad",
+        name: withSourceName("CineCalidad", serverName),
         title: `${result.quality || "Unknown"} \xB7 ${serverName}`,
         url: result.url,
         quality: result.quality || "Unknown",

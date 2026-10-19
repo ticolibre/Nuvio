@@ -6628,6 +6628,11 @@ __export(embed69_exports, {
   getStreams: () => getStreams
 });
 module.exports = __toCommonJS(embed69_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 function __nuvioGetOrigin(u) {
   var m = (u || "").match(/^(https?:\/\/[^/]+)/i);
   return m ? m[1] : "";
@@ -7301,7 +7306,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
             const langLabel = l === "LAT" ? "Latino" : l === "ESP" ? "Espa\xF1ol" : "Subtitulado";
             const serverLabel = SERVER_LABELS[servername] || servername;
             streams.push({
-              name: "Embed69",
+              name: withSourceName("Embed69", serverLabel),
               title: `${quality || "Unknown"} \xB7 ${langLabel} \xB7 ${serverLabel}`,
               url,
               quality: quality || "Unknown",

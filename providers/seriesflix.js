@@ -54,6 +54,11 @@ __export(seriesflix_exports, {
   getStreams: () => getStreams
 });
 module.exports = __toCommonJS(seriesflix_exports);
+// Indica la fuente/servidor usado junto al nombre del provider:
+// "Provider (Servidor)". Si el servidor no se conoce, deja solo el nombre.
+function withSourceName(base, source) {
+  return source ? `${base} (${source})` : base;
+}
 var UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36";
 function normalizeResolution(width, height) {
   if (width >= 3840 || height >= 2160)
@@ -328,7 +333,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
           continue;
         const results = yield Promise.allSettled(urls.map((u) => resolveNupload(u)));
         const valid = results.filter((r) => r.status === "fulfilled" && r.value).map((r, i) => ({
-          name: "SeriesFlixHD",
+          name: withSourceName("SeriesFlixHD", "Nupload"),
           title: `${r.value.quality} \xB7 ${langLabel} \xB7 Nupload`,
           url: r.value.url,
           quality: r.value.quality,
