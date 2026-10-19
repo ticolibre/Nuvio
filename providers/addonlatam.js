@@ -132,6 +132,16 @@ function labelTitle(title, source) {
     return title;
   return title.split(" \xB7 ").map((part) => part.trim() === "Server" ? source : part).join(" \xB7 ");
 }
+// El addon marca como "CAM" las copias grabadas en sala (p.ej. filename
+// "M3GAN.2.0.2.0.CAM.LATINO" o titulo "... | Opción 4 • Latino | 2.0 CAM").
+// Se descartan: son la peor calidad disponible.
+var CAM_RE = /(?:^|[^a-z0-9])(?:cam|camrip|hdcam|hqcam)(?![a-z0-9])/i;
+function isCamOption(item) {
+  if (!item)
+    return false;
+  const filename = item.behaviorHints ? String(item.behaviorHints.filename || "") : "";
+  return CAM_RE.test(`${item.title || ""} ${filename}`);
+}
 function getImdbId(tmdbId, mediaType) {
   return __async(this, null, function* () {
     try {
@@ -195,9 +205,14 @@ function getStreams(tmdbId, mediaType, season, episode) {
       const list = data && Array.isArray(data.streams) ? data.streams : [];
       const candidates = [];
       const seen = {};
+      let camDropped = 0;
       for (const item of list) {
         if (!item || !item.url)
           continue;
+        if (isCamOption(item)) {
+          camDropped++;
+          continue;
+        }
         const url = cleanStreamUrl(item.url);
         if (!url || seen[url])
           continue;
@@ -210,6 +225,8 @@ function getStreams(tmdbId, mediaType, season, episode) {
           isRedirect: hostFromUrl(url).toLowerCase() === ADDON_HOST
         });
       }
+      if (camDropped > 0)
+        console.log(`[AddonLatam] ${camDropped} opci\xF3n(es) CAM descartada(s)`);
       if (candidates.length === 0) {
         console.log("[AddonLatam] Sin streams");
         return [];
