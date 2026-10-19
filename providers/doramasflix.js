@@ -78,6 +78,27 @@ function normalize(str) {
 function hyphenate(title) {
   return normalize(title).replace(/\s+/g, "-");
 }
+// Puntaje mínimo total (nombre + año) para aceptar un candidato.
+// Con 600 queda fuera una coincidencia de una sola palabra por nombre
+// (máx. 300), y también una con año equivocado.
+var MIN_SCORE = 600;
+// Puntos por año: mismo año premia, año lejano penaliza, sin fecha = neutral.
+var YEAR_EXACT = 400;
+var YEAR_NEAR = 250;
+var YEAR_MISMATCH = -400;
+function yearScore(candidateDate, tmdbYear) {
+  if (!candidateDate || !tmdbYear)
+    return 0;
+  var ym = String(candidateDate).match(/(\d{4})/);
+  if (!ym)
+    return 0;
+  var diff = Math.abs(parseInt(ym[1]) - tmdbYear);
+  if (diff === 0)
+    return YEAR_EXACT;
+  if (diff <= 1)
+    return YEAR_NEAR;
+  return YEAR_MISMATCH;
+}
 function scoreName(candidate, targets) {
   var nc = normalize(candidate);
   var best = -9999;
@@ -548,12 +569,12 @@ function gqlOp(operationName, variables, query) {
     return res.json();
   });
 }
-var Q_SEARCH = "query searchAll($input: String!) {\n  searchDorama(input: $input, limit: 5) {\n    _id\n    slug\n    name\n    name_es\n    poster_path\n    isTVShow\n    poster\n    __typename\n  }\n  searchMovie(input: $input, limit: 5) {\n    _id\n    name\n    name_es\n    slug\n    poster_path\n    poster\n    __typename\n  }\n}";
+var Q_SEARCH = "query searchAll($input: String!) {\n  searchDorama(input: $input, limit: 5) {\n    _id\n    slug\n    name\n    name_es\n    poster_path\n    isTVShow\n    poster\n    first_air_date\n    __typename\n  }\n  searchMovie(input: $input, limit: 5) {\n    _id\n    name\n    name_es\n    slug\n    poster_path\n    poster\n    release_date\n    __typename\n  }\n}";
 var Q_DETAIL_MOVIE = "query detailMovieExtra($slug: String!) {\n  detailMovie(filter: {slug: $slug}) {\n    name\n    name_es\n    links_online\n  }\n}";
 var Q_LIST_SEASONS = "query listSeasons($serie_id: MongoID!) {\n  listSeasons(sort: NUMBER_ASC, filter: {serie_id: $serie_id}) {\n    slug\n    season_number\n  }\n}";
 var Q_LIST_EPISODES = "query listEpisodesPagination($page: Int!, $serie_id: MongoID!, $season_number: Float!) {\n  paginationEpisode(\n    page: $page\n    perPage: 1000\n    sort: NUMBER_ASC\n    filter: {type_serie: \"dorama\", serie_id: $serie_id, season_number: $season_number}\n  ) {\n       items {\n      _id\n      name\n      episode_number\n      season_number\n      slug\n    }\n    pageInfo {\n      hasNextPage\n    }\n  }\n}";
 var Q_EP_LINKS = "query GetEpisodeLinks($episode_slug: String!) {\n  detailEpisode(filter: {slug: $episode_slug, type_serie: \"dorama\"}) {\n    links_online\n   }\n}";
-function getTmdbTitles(tmdbId, mediaType) {
+function getTmdbInfo(tmdbId, mediaType) {
   return __async(this, null, function* () {
     var endpoint = mediaType === "movie" ? "movie" : "tv";
     var urls = [
@@ -565,6 +586,7 @@ function getTmdbTitles(tmdbId, mediaType) {
       return fetch(u, { headers: { "User-Agent": UA } }).then(function(r) { return r.json(); }).catch(function() { return null; });
     }));
     var titles = [];
+    var year = null;
     for (var i = 0; i < results.length; i++) {
       var data = results[i];
       if (!data)
@@ -575,8 +597,14 @@ function getTmdbTitles(tmdbId, mediaType) {
         titles.push(t);
       if (ot && titles.indexOf(ot) === -1)
         titles.push(ot);
+      if (!year) {
+        var d = mediaType === "movie" ? data.release_date : data.first_air_date;
+        var ym = (d || "").match(/(\d{4})/);
+        if (ym)
+          year = parseInt(ym[1]);
+      }
     }
-    return titles;
+    return { titles: titles, year: year };
   });
 }
 function processLink(link, langId) {
@@ -641,7 +669,9 @@ function getStreams(tmdbId, mediaType, season, episode) {
     console.log(`[DoramasFlix] Buscando: TMDB ${tmdbId} (${mediaType})` + (mediaType === "tv" ? ` S${season}E${episode}` : ""));
     try {
       var wantMovie = mediaType === "movie";
-      var titles = yield getTmdbTitles(tmdbId, mediaType);
+      var info = yield getTmdbInfo(tmdbId, mediaType);
+      var titles = info.titles;
+      var tmdbYear = info.year;
       if (!titles.length) {
         console.log("[DoramasFlix] Sin títulos TMDB");
         return [];
@@ -689,6 +719,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
       var names = titles.slice();
       var best = null;
       var bestScore = -9999;
+      var bestNameScore = -9999;
       for (var bi = 0; bi < candidates.length; bi++) {
         var cands = [candidates[bi].name, candidates[bi].name_es].filter(Boolean);
         var sc = -9999;
@@ -697,16 +728,21 @@ function getStreams(tmdbId, mediaType, season, episode) {
           if (s2 > sc)
             sc = s2;
         }
-        if (sc > bestScore) {
-          bestScore = sc;
+        var candDate = wantMovie ? candidates[bi].release_date : candidates[bi].first_air_date;
+        var ysc = yearScore(candDate, tmdbYear);
+        var total = sc + ysc;
+        if (total > bestScore) {
+          bestScore = total;
+          bestNameScore = sc;
           best = candidates[bi];
+          console.log(`[DoramasFlix] Candidato "${candidates[bi].name}" nombre=${sc} año=${ysc} (${candDate || "s/f"}) total=${total}`);
         }
       }
-      if (!best || bestScore < 300) {
-        console.log(`[DoramasFlix] Sin match suficiente (mejor: ${bestScore})`);
+      if (!best || bestScore < MIN_SCORE) {
+        console.log(`[DoramasFlix] Sin match suficiente (mejor: ${bestScore}, mínimo: ${MIN_SCORE}${tmdbYear ? `, año TMDB ${tmdbYear}` : ""})`);
         return [];
       }
-      console.log(`[DoramasFlix] Seleccionado: "${best.name}" score=${bestScore}`);
+      console.log(`[DoramasFlix] Seleccionado: "${best.name}" score=${bestScore} (nombre=${bestNameScore}${tmdbYear ? `, año TMDB ${tmdbYear}` : ""})`);
       var links = [];
       if (wantMovie) {
         var dres = yield gqlOp("detailMovieExtra", { slug: best.slug }, Q_DETAIL_MOVIE);
