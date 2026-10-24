@@ -46,7 +46,6 @@ Esto es un **plugin para Nuvio**. Para instalarlo:
 | `deepflix` | ✅ | ✅ |
 | `doramasflix` | ✅ | ✅ |
 | `embed69` | ✅ | ✅ |
-| `fuegocine` | ✅ | ✅ |
 | `henaojara` | ✅ | ✅ |
 | `jkanime` | ✅ | ✅ |
 | `lamovie` | ✅ | ✅ |
@@ -59,6 +58,23 @@ Esto es un **plugin para Nuvio**. Para instalarlo:
 | `seriesmetro` | ✅ | ✅ |
 | `sololatino` | ✅ | ✅ |
 | `tioanime` | ✅ | ✅ |
+---
+
+## Pruebas locales (opcional)
+
+El repositorio incluye `test.js` para comprobar los providers desde tu PC. **No se ejecuta dentro de Nuvio**: es solo una herramienta de desarrollo.
+
+Requisitos: Node.js 18 o superior y `crypto-js` (`npm install crypto-js`).
+
+```bash
+node test.js                        # cascade: todos contra el primer título; solo los fallos pasan al siguiente
+node test.js --fixtures=squidgame   # todos los providers contra un solo título
+node test.js --matrix               # todos los providers contra todos los títulos
+node test.js --only=jkanime -v      # un provider concreto, mostrando sus logs
+```
+
+Estados: `OK n` (n streams), `EMPTY` (respondió sin streams), `TIMEOUT`, `ERROR` y `—` (tipo no soportado).
+
 ---
 
 ## Descargo de Responsabilidad

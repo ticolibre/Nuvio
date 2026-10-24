@@ -1,6 +1,6 @@
 {
   "name": "Nuvio Latam+",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "scrapers": [
     {
       "id": "cinecalidad",
@@ -28,22 +28,6 @@
         "tv"
       ],
       "filename": "providers/lamovie.js",
-      "enabled": true,
-      "contentLanguage": [
-        "es"
-      ]
-    },
-    {
-      "id": "fuegocine",
-      "name": "FuegoCine",
-      "description": "Streams en Español desde fuegocine.com",
-      "version": "2.0.0",
-      "author": "TicoLibre",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/fuegocine.js",
       "enabled": true,
       "contentLanguage": [
         "es"
