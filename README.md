@@ -52,6 +52,7 @@ Esto es un **plugin para Nuvio**. Para instalarlo:
 | `latanime` | ✅ | ✅ |
 | `monoschinos` | ✅ | ✅ |
 | `pelispedia` | ✅ | ✅ |
+| `pelisforte` | ✅ | ✅ |
 | `pelisplus` | ✅ | ✅ |
 | `peliserieshoy` | ✅ | ✅ |
 | `seriesflix` | ✅ | ✅ |
