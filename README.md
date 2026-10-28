@@ -42,6 +42,7 @@ Esto es un **plugin para Nuvio**. Para instalarlo:
 | `animeav1` | ✅ | ✅ |
 | `areshd` | ✅ | ✅ |
 | `cinecalidad` | ✅ | ❌ |
+| `cinehax` | ✅ | ✅ |
 | `cuevana` | ✅ | ✅ |
 | `deepflix` | ✅ | ✅ |
 | `doramasflix` | ✅ | ✅ |
