@@ -1,2 +1,5 @@
 .DS_Store
 node_modules/
+
+# Local test modules (not for GitHub)
+special_modules/
