@@ -84,6 +84,21 @@ function isHdhubStream(item) {
   return HDHUB_TEXT_RE.test(release);
 }
 
+// 111477 es un volcado multilingue (ingles, aleman, italiano, turco,
+// frances...) que Hydra etiqueta entero como "Latino". Solo se aceptan los
+// archivos con marca explicita de espanol; el resto son releases originales.
+var SPANISH_RE = /(?:latino|castellano|espanol|español|spanish|(?:^|[.\s_-])esp(?:[.\s_-]|$))/i;
+var MIXED_DUMP_HOST_RE = /(?:^|\.)111477\.xyz$/i;
+
+function isForeignDump(item) {
+  var url = String(item.url || "");
+  if (!MIXED_DUMP_HOST_RE.test(hostFromUrl(url))) return false;
+  var filename = item.behaviorHints && item.behaviorHints.filename ? String(item.behaviorHints.filename) : "";
+  // Ojo: no se mira item.name, porque Hydra siempre le pone "Latino".
+  var release = url + " " + filename + " " + String(item.description || "") + " " + String(item.title || "");
+  return !SPANISH_RE.test(release);
+}
+
 var HAS_TIMERS = typeof setTimeout === "function";
 
 function log(msg) {
@@ -285,6 +300,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
           var torrents = 0;
           var cams = 0;
           var hdhub = 0;
+          var foreign = 0;
           var duplicated = 0;
 
           for (var i = 0; i < list.length; i++) {
@@ -302,6 +318,10 @@ function getStreams(tmdbId, mediaType, season, episode) {
               hdhub++;
               continue;
             }
+            if (isForeignDump(item)) {
+              foreign++;
+              continue;
+            }
             if (isCamOption(item)) {
               cams++;
               continue;
@@ -317,6 +337,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
           if (torrents > 0) log(torrents + " torrent(s) descartado(s)");
           if (duplicated > 0) log(duplicated + " opcion(es) de Addon Latam/DeepFlix/LatAnime descartada(s)");
           if (hdhub > 0) log(hdhub + " opcion(es) de HDHub (hindi/tamil/telugu) descartada(s)");
+          if (foreign > 0) log(foreign + " opcion(es) de 111477 sin audio espanol descartada(s)");
           if (cams > 0) log(cams + " opcion(es) CAM descartada(s)");
 
           var out = streams.slice(0, MAX_STREAMS);
