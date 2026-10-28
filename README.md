@@ -43,6 +43,7 @@ Esto es un **plugin para Nuvio**. Para instalarlo:
 | `areshd` | ✅ | ✅ |
 | `cinecalidad` | ✅ | ❌ |
 | `cinehax` | ✅ | ✅ |
+| `cinehaxplus` | ✅ | ✅ |
 | `cuevana` | ✅ | ✅ |
 | `deepflix` | ✅ | ✅ |
 | `doramasflix` | ✅ | ✅ |

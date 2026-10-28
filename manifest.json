@@ -1,6 +1,6 @@
 {
   "name": "Nuvio Latam+",
-  "version": "2.2.15",
+  "version": "2.2.16",
   "scrapers": [
     {
       "id": "cinecalidad",
@@ -354,9 +354,25 @@
       ]
     },
     {
-      "id": "cinehax",
+      "id": "cinehaxplus",
       "name": "CineHax+",
       "description": "Streams en Español desde cinehaxplus.com",
+      "version": "1.0.0",
+      "author": "TicoLibre",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/cinehaxplus.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "cinehax",
+      "name": "CineHax",
+      "description": "Streams en Español desde cinehax.org",
       "version": "1.0.0",
       "author": "TicoLibre",
       "supportedTypes": [
