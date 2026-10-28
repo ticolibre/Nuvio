@@ -47,7 +47,6 @@ Esto es un **plugin para Nuvio**. Para instalarlo:
 | `doramasflix` | ✅ | ✅ |
 | `embed69` | ✅ | ✅ |
 | `henaojara` | ✅ | ✅ |
-| `hydra` | ✅ | ✅ |
 | `jkanime` | ✅ | ✅ |
 | `lamovie` | ✅ | ✅ |
 | `latanime` | ✅ | ✅ |
