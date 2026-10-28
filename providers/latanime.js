@@ -81,30 +81,46 @@ function entryLang(href, title) {
   return "SUB";
 }
 function scoreTitle(candidate, targets) {
-  var nc = normalize(candidate).replace(/\b(latino|castellano|castelano|subtitulado|subtitulada|sub|dubbed|doblado|audio)\b/g, "").replace(/\s+/g, " ").trim();
+  var nc = normalize(candidate).replace(/\b(latino|castellano|castelano|subtitulado|subtitulada|sub|dubbed|doblado|audio)\b/g, "").replace(/\b(?:temporada|season|parte|part|ova|movie|pelicula)\s*\d+\b/g, "").replace(/\b(?:19|20)\d{2}\b/g, "").replace(/\s+/g, " ").trim();
+  var cr = nc.split(" ").filter(Boolean);
   var best = -9999;
   for (var i = 0; i < targets.length; i++) {
     var nt = normalize(targets[i]);
     if (!nt)
       continue;
+    var ct = nt.split(" ").filter(Boolean);
+    if (!ct.length)
+      continue;
     var score = 0;
     if (nc === nt)
       score += 600;
-    var ct = nt.split(" ").filter(Boolean);
-    var cr = nc.split(" ").filter(Boolean);
     var common = 0;
     for (var t = 0; t < ct.length; t++) {
       if (cr.indexOf(ct[t]) !== -1)
         common++;
     }
     score += common * 50;
-    if (ct.length > 0 && common === ct.length) {
+    // Cuanto del titulo buscado aparece (coverTarget) y cuanto del resultado
+    // es realmente el titulo (coverCandidate). Sin ambas cosas, un titulo
+    // corto como "Obsession" o "Elite" se "encuentra" dentro de cualquier
+    // serie que solo comparta esa palabra.
+    var coverTarget = common / ct.length;
+    var coverCandidate = cr.length ? common / cr.length : 0;
+    if (common === ct.length) {
       if (ct.length <= 2) {
-        score += 250;
+        // Titulos cortos: solo vale si el resultado no agrega palabras de mas.
+        if (cr.length <= ct.length)
+          score += 250;
+        else if (cr.length <= ct.length + 1)
+          score += 120;
+        else
+          score -= 200;
       } else {
         var ratio = ct.length / Math.max(cr.length, 1);
         score += ratio >= 0.6 ? 500 : ratio >= 0.4 ? 250 : 80;
       }
+    } else if (coverTarget >= 0.75 && coverCandidate >= 0.5) {
+      score += 150;
     }
     if (cr.length === 1 && ct.length === 1 && cr[0] !== ct[0])
       score -= 300;
