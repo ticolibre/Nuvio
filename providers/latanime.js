@@ -80,8 +80,14 @@ function entryLang(href, title) {
     return "ESP";
   return "SUB";
 }
-function scoreTitle(candidate, targets) {
-  var nc = normalize(candidate).replace(/\b(latino|castellano|castelano|subtitulado|subtitulada|sub|dubbed|doblado|audio)\b/g, "").replace(/\b(?:temporada|season|parte|part|ova|movie|pelicula)\s*\d+\b/g, "").replace(/\b(?:19|20)\d{2}\b/g, "").replace(/\s+/g, " ").trim();
+function scoreTitle(candidate, targets, isSeries) {
+  var nc = normalize(candidate).replace(/\b(latino|castellano|castelano|subtitulado|subtitulada|sub|dubbed|doblado|audio|espanol)\b/g, "").replace(/\b(?:temporada|season|parte|part|ova|movie|pelicula)\s*\d+\b/g, "").replace(/\b(?:19|20)\d{2}\b/g, "");
+  if (isSeries) {
+    // El sitio marca la temporada en el titulo ("... S2 Latino", "... 3 Parte 2",
+    // "... (TV)"). Para comparar nombres hay que quitarla: no es parte del titulo.
+    nc = nc.replace(/\b(?:temporada|season)\s*\d{1,2}\b/g, " ").replace(/\b(?:parte|part)\s*\d\b/g, " ").replace(/\bs\s?\d{1,2}\b/g, " ").replace(/\btv\b/g, " ").replace(/\s+\d{1,2}\s*$/, " ");
+  }
+  nc = nc.replace(/\s+/g, " ").trim();
   var cr = nc.split(" ").filter(Boolean);
   var best = -9999;
   for (var i = 0; i < targets.length; i++) {
@@ -122,6 +128,11 @@ function scoreTitle(candidate, targets) {
     } else if (coverTarget >= 0.75 && coverCandidate >= 0.5) {
       score += 150;
     }
+    // Palabras que el resultado agrega al titulo buscado ("... The Last Attack",
+    // "... Shippuden"). Un extra puede ser legitimo, tres ya es otra entrega.
+    var extra = cr.length - common;
+    if (extra > 0)
+      score -= extra * 40;
     if (cr.length === 1 && ct.length === 1 && cr[0] !== ct[0])
       score -= 300;
     if (score > best)
@@ -530,29 +541,86 @@ function processEmbed(url, lang, pageUrl) {
     }
   });
 }
+// Limite de busquedas en el sitio por cada consulta (cada titulo = 1 request).
+var MAX_TITLE_QUERIES = 5;
 function getTmdbTitles(tmdbId, mediaType) {
   return __async(this, null, function* () {
     var endpoint = mediaType === "movie" ? "movie" : "tv";
     var urls = [
       `https://api.themoviedb.org/3/${endpoint}/${tmdbId}?api_key=${TMDB_API_KEY}&language=es-MX`,
-      `https://api.themoviedb.org/3/${endpoint}/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
+      `https://api.themoviedb.org/3/${endpoint}/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`,
+      `https://api.themoviedb.org/3/${endpoint}/${tmdbId}/alternative_titles?api_key=${TMDB_API_KEY}`
     ];
     var results = yield Promise.all(urls.map(function(u) {
       return fetch(u, { headers: { "User-Agent": UA } }).then(function(r) { return r.json(); }).catch(function() { return null; });
     }));
-    var titles = [];
-    for (var i = 0; i < results.length; i++) {
+    var queries = [];
+    var targets = [];
+    var seenTargets = {};
+    var seenQueries = {};
+    var clean = function(t) {
+      var key = normalize(t);
+      // Sin letras latinas no sirve: el sitio indexa en espanol/romaji.
+      if (!key || !/[a-z]/.test(key))
+        return "";
+      return key;
+    };
+    var push = function(list, seen, t, limit) {
+      var key = clean(t);
+      if (!key || seen[key])
+        return;
+      if (limit && list.length >= limit)
+        return;
+      seen[key] = true;
+      list.push(t);
+    };
+    for (var i = 0; i < 2; i++) {
       var data = results[i];
       if (!data)
         continue;
-      var t = mediaType === "movie" ? data.title : data.name;
-      var ot = mediaType === "movie" ? data.original_title : data.original_name;
-      if (t && titles.indexOf(t) === -1)
-        titles.push(t);
-      if (ot && titles.indexOf(ot) === -1)
-        titles.push(ot);
+      push(targets, seenTargets, mediaType === "movie" ? data.title : data.name);
+      push(targets, seenTargets, mediaType === "movie" ? data.original_title : data.original_name);
     }
-    return titles;
+    // Los titulos base siempre se buscan y siempre puntuan.
+    for (var b = 0; b < targets.length; b++)
+      push(queries, seenQueries, targets[b], MAX_TITLE_QUERIES);
+    // Titulos alternativos: el romaji es clave para anime que el sitio indexa
+    // con su nombre japones ("Shingeki no Kyojin" en vez de "Attack on Titan").
+    // Se excluyen los de otras entregas (OVA, temporada, pelicula).
+    var alts = results[2] && Array.isArray(results[2].results) ? results[2].results : [];
+    var romaji = [];
+    var others = [];
+    for (var a = 0; a < alts.length; a++) {
+      var alt = alts[a];
+      if (!alt || !alt.title)
+        continue;
+      var type = String(alt.type || "").toLowerCase();
+      if (/oad|ova|season|chapter|special|alternative|series/.test(type))
+        continue;
+      if (type.indexOf("romaji") !== -1)
+        romaji.push(alt.title);
+      else if (alt.iso_3166_1 === "ES" || alt.iso_3166_1 === "MX" || alt.iso_3166_1 === "US")
+        others.push(alt.title);
+    }
+    var ordered = romaji.concat(others);
+    // Solo los alternativos "cortos" sirven para puntuar: uno con muchas mas
+    // palabras que el titulo base suele ser un arco o temporada concreta
+    // ("Bleach Sennen Kessen-hen" = temporada 17), no la serie completa.
+    var baseMax = 1;
+    for (var m = 0; m < targets.length; m++) {
+      var words = normalize(targets[m]).split(" ").filter(Boolean).length;
+      if (words > baseMax)
+        baseMax = words;
+    }
+    for (var o = 0; o < ordered.length; o++) {
+      var name = ordered[o];
+      var altWords = normalize(name).split(" ").filter(Boolean).length;
+      var isArc = /[:]|\s-\s/.test(name) || altWords > baseMax + 1;
+      if (!isArc)
+        push(targets, seenTargets, name);
+      push(queries, seenQueries, name, MAX_TITLE_QUERIES);
+    }
+    return { queries: queries, targets: targets };
   });
 }
 function searchSite(query) {
@@ -624,6 +692,40 @@ function extractPlayers(episodeHtml) {
   }
   return out;
 }
+// Temporada que anuncia el titulo del sitio: "S3", "Temporada 2", "3 Parte 2"
+// o un numero suelto al final ("Shingeki no Kyojin 2"). season = null si el
+// titulo no indica ninguna, que en este sitio equivale a la primera temporada.
+function seasonInfo(title) {
+  var t = normalize(title).replace(/\b(latino|castellano|castelano|subtitulado|subtitulada|sub|doblado|dubbed|audio)\b/g, " ").replace(/\s+/g, " ").trim();
+  var part = t.match(/\b(?:parte|part)\s*(\d)\b/);
+  var num = t.match(/\bs\s?(\d{1,2})\b/) || t.match(/\b(?:temporada|season)\s*(\d{1,2})\b/) || t.match(/\b(\d{1,2})\s*(?:a|ra|da)?\s*(?:temporada|season)\b/);
+  var season = num ? parseInt(num[1], 10) : null;
+  if (season === null) {
+    var bare = t.match(/(?:^|\s)(\d{1,2})$/);
+    if (bare) {
+      var n = parseInt(bare[1], 10);
+      if (n >= 2 && n <= 9)
+        season = n;
+    }
+  }
+  var isFinal = /\bfinal\s+(season|chapters?)\b/.test(t) || /\bthe final season\b/.test(t);
+  return { season: season, part: part ? parseInt(part[1], 10) : 1, final: isFinal };
+}
+
+// Un resultado solo sirve si es la misma serie (no OVA ni pelicula) y la misma
+// temporada: si no, S1E1 terminaria apuntando a la pagina de la S3.
+function isEpisodeEntry(title, targetSeason) {
+  var t = normalize(title);
+  if (/\b(ova|oav|movie|pelicula|especial|special)\b/.test(t))
+    return false;
+  var info = seasonInfo(title);
+  if (info.part > 1)
+    return false;
+  if (info.season === null)
+    return targetSeason === 1 && !info.final;
+  return info.season === targetSeason;
+}
+
 function getStreams(tmdbId, mediaType, season, episode) {
   return __async(this, null, function* () {
     if (!tmdbId || !mediaType)
@@ -634,19 +736,23 @@ function getStreams(tmdbId, mediaType, season, episode) {
     var startTime = Date.now();
     console.log(`[LatAnime] Buscando: TMDB ${tmdbId} (${mediaType})` + (wantMovie ? "" : ` S${season}E${episode}`));
     try {
-      var titles = yield getTmdbTitles(tmdbId, mediaType);
-      if (!titles.length) {
+      var meta = yield getTmdbTitles(tmdbId, mediaType);
+      if (!meta.queries.length) {
         console.log("[LatAnime] Sin títulos TMDB");
         return [];
       }
+      var titles = meta.targets;
       var animeUrl = null;
       var animeTitle = "";
       var animeScore = -9999;
       var animeRank = 99;
-      for (var ti = 0; ti < titles.length; ti++) {
-        var results = yield searchSite(titles[ti]);
+      var targetSeason = wantMovie ? 1 : parseInt(season, 10) || 1;
+      for (var ti = 0; ti < meta.queries.length; ti++) {
+        var results = yield searchSite(meta.queries[ti]);
         for (var bi = 0; bi < results.length; bi++) {
-          var sc = scoreTitle(results[bi].title, titles);
+          if (!wantMovie && !isEpisodeEntry(results[bi].title, targetSeason))
+            continue;
+          var sc = scoreTitle(results[bi].title, titles, !wantMovie);
           var rk = (function() {
             var c = entryLang(results[bi].href, results[bi].title);
             return c === "LAT" ? 0 : c === "ESP" ? 1 : 2;
@@ -661,7 +767,10 @@ function getStreams(tmdbId, mediaType, season, episode) {
       }
       if (animeUrl)
         console.log(`[LatAnime] Seleccionado: "${animeTitle}" score=${animeScore}`);
-      if (!animeUrl || animeScore < 300) {
+      // Para series se pide coincidencia casi exacta: un resultado con palabras
+      // de mas ("... Vigilantes", "... Memories") es otra entrega, no la serie.
+      var minScore = wantMovie ? 300 : 700;
+      if (!animeUrl || animeScore < minScore) {
         console.log("[LatAnime] Sin resultados en búsqueda");
         return [];
       }
