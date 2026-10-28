@@ -10,8 +10,9 @@
 // (entradas con infoHash y sin url) se descartan: Nuvio no tiene debrid.
 //
 // Hydra agrega contenido de otros add-ons. Como este plugin ya tiene los
-// providers DeepFlix y Addon Latam por separado, aqui se ignoran sus enlaces
-// (mg.homelabx.qzz.io y addonlatam.duckdns.org) para no duplicar opciones.
+// providers DeepFlix, Addon Latam y LatAnime por separado, aqui se ignoran
+// sus enlaces (mg.homelabx.qzz.io, addonlatam.duckdns.org y el tag
+// "latanime|...") para no duplicar opciones.
 //
 // Si algun dia quieres usar tu propia configuracion de Hydra (con debrid),
 // cambia BASE_URL por tu URL configurada (https://host/<config>/manifest.json
@@ -33,6 +34,19 @@ var IGNORED_HOSTS = {
   "addonlatam.duckdns.org": "Addon Latam",
   "mg.homelabx.qzz.io": "DeepFlix"
 };
+
+// LatAnime se reparte entre varios hosts (MP4Upload, YourUpload/VidCache),
+// asi que se detecta por el bingeGroup del add-on, no por el host.
+var IGNORED_BINGE_PREFIXES = ["latanime|"];
+
+function isIgnoredStream(item) {
+  if (IGNORED_HOSTS[hostFromUrl(item.url)]) return true;
+  var group = item.behaviorHints && item.behaviorHints.bingeGroup ? String(item.behaviorHints.bingeGroup) : "";
+  for (var i = 0; i < IGNORED_BINGE_PREFIXES.length; i++) {
+    if (group.indexOf(IGNORED_BINGE_PREFIXES[i]) === 0) return true;
+  }
+  return false;
+}
 
 // El add-on marca como "CAM" las copias grabadas en sala. Se descartan:
 // son la peor calidad disponible.
@@ -247,7 +261,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
               torrents++;
               continue;
             }
-            if (IGNORED_HOSTS[hostFromUrl(item.url)]) {
+            if (isIgnoredStream(item)) {
               duplicated++;
               continue;
             }
@@ -264,7 +278,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
           }
 
           if (torrents > 0) log(torrents + " torrent(s) descartado(s)");
-          if (duplicated > 0) log(duplicated + " opcion(es) de Addon Latam/DeepFlix descartada(s)");
+          if (duplicated > 0) log(duplicated + " opcion(es) de Addon Latam/DeepFlix/LatAnime descartada(s)");
           if (cams > 0) log(cams + " opcion(es) CAM descartada(s)");
 
           var out = streams.slice(0, MAX_STREAMS);
