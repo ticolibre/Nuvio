@@ -3,3 +3,6 @@ node_modules/
 
 # Local test modules (not for GitHub)
 special_modules/
+
+# Providers retirados (no se cargan)
+legacy/
