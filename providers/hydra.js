@@ -14,6 +14,12 @@
 // sus enlaces (mg.homelabx.qzz.io, addonlatam.duckdns.org y el tag
 // "latanime|...") para no duplicar opciones.
 //
+// Tambien se descarta HDHub: es un indexador indio (Hindi/Tamil/Telugu) que
+// Hydra mezcla con el catalogo latino. Sus enlaces salen por
+// hdhub.*, hubcloud.*, hubdrive.*, pixeldrain y el bucket R2 "/hub/" de
+// Cloudflare, y no traen audio en espanol. Hydra los etiqueta igual como
+// "Latino", asi que la unica pista real esta en el campo description.
+//
 // Si algun dia quieres usar tu propia configuracion de Hydra (con debrid),
 // cambia BASE_URL por tu URL configurada (https://host/<config>/manifest.json
 // -> BASE_URL = "https://host/<config>").
@@ -51,6 +57,32 @@ function isIgnoredStream(item) {
 // El add-on marca como "CAM" las copias grabadas en sala. Se descartan:
 // son la peor calidad disponible.
 var CAM_RE = /(?:^|[^a-z0-9])(?:cam|camrip|hdcam|hqcam)(?![a-z0-9])/i;
+
+// HDHub: hosts propios y puertas de enlace que usa para publicar sus
+// releases (hubcloud/hubdrive/pixeldrain). El bucket R2 de Cloudflare se
+// reconoce por la ruta "/hub/", que es donde HubCloud monta los archivos.
+var HDHUB_HOST_RE = /(?:^|\.)(?:hdhub|hubcloud|hubdrive|hubcdn)\./i;
+var HDHUB_TEXT_RE = /\b(?:hdhub4u|4khdhub|hubcloud|hubdrive)\b/i;
+var NON_ES_AUDIO_RE = /\b(?:hindi|tamil|telugu|malayalam|kannada)\b/i;
+
+// Algunos hosts tambien sirven fuentes latinas (pixeldrain, R2). Para esos
+// solo se descarta cuando el release se identifica como HDHub o viene en un
+// idioma indio sin marca de espanol.
+function isHdhubStream(item) {
+  var url = String(item.url || "");
+  var host = hostFromUrl(url);
+  var filename = item.behaviorHints && item.behaviorHints.filename ? String(item.behaviorHints.filename) : "";
+  var release = String(item.description || "") + " " + String(item.title || "") + " " + filename;
+  var looksSpanish = /latino|castellano|espanol|español|spanish|multi/i.test(release);
+
+  if (host.indexOf("pixeldrain.") !== -1) {
+    return HDHUB_TEXT_RE.test(release) || (!looksSpanish && NON_ES_AUDIO_RE.test(release));
+  }
+  if (host.indexOf("cloudflarestorage.com") !== -1 && /\/hub\//i.test(url)) return true;
+  if (/\.r2\.dev$/i.test(host) && /\/hub\//i.test(url)) return true;
+  if (HDHUB_HOST_RE.test(host)) return true;
+  return HDHUB_TEXT_RE.test(release);
+}
 
 var HAS_TIMERS = typeof setTimeout === "function";
 
@@ -252,6 +284,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
           var seen = {};
           var torrents = 0;
           var cams = 0;
+          var hdhub = 0;
           var duplicated = 0;
 
           for (var i = 0; i < list.length; i++) {
@@ -263,6 +296,10 @@ function getStreams(tmdbId, mediaType, season, episode) {
             }
             if (isIgnoredStream(item)) {
               duplicated++;
+              continue;
+            }
+            if (isHdhubStream(item)) {
+              hdhub++;
               continue;
             }
             if (isCamOption(item)) {
@@ -279,6 +316,7 @@ function getStreams(tmdbId, mediaType, season, episode) {
 
           if (torrents > 0) log(torrents + " torrent(s) descartado(s)");
           if (duplicated > 0) log(duplicated + " opcion(es) de Addon Latam/DeepFlix/LatAnime descartada(s)");
+          if (hdhub > 0) log(hdhub + " opcion(es) de HDHub (hindi/tamil/telugu) descartada(s)");
           if (cams > 0) log(cams + " opcion(es) CAM descartada(s)");
 
           var out = streams.slice(0, MAX_STREAMS);
